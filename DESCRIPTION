@@ -1,0 +1,14 @@
+Package: abscreenmethods
+Type: Package
+Title: Recreate results from paper
+Version: 0.0.0.9000
+Authors@R: c(
+    person(
+      "Florian", "Tanner",
+      role = c("aut", "cre")
+    )
+  )
+Description: Recreate results from paper
+License: MIT
+Encoding: UTF-8
+LazyData: true
