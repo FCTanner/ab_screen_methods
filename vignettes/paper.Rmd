@@ -1,5 +1,5 @@
 ---
-title: "paper"
+title: "Time course sensor-based phenotyping can predict Ascochyta blight disease severity in Cicer species"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{paper}
@@ -12,8 +12,68 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+devtools::load_all()
 ```
 
-```{r setup}
-print("sdf")
+
+# Results
+
+## Disease scores
+
+### Overview of disease indices
+
+Average disease indices and standard deviation of control genotypes and all pots per experiment
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+scores <- read_scores()
+make_score_table(scores)
 ```
+
+```{r echo = FALSE, fig.align='center', fig.width=7, fig.height=3, dpi=96, message=FALSE, warning=FALSE}
+make_control_genotypes_score_dotplot(scores)
+```
+
+```{r echo = FALSE, fig.align='center', fig.width=7, fig.height=3, dpi=96, message=FALSE, warning=FALSE}
+subsets <- unique(scores$subset)
+subsets |> 
+  purrr::walk(\(s) {
+    p <- make_score_histogram(scores, s)
+    print(p)
+  })
+```
+
+### Repeatability of scoring
+
+```{r, echo = FALSE, message=FALSE}
+make_scoring_repeatability_table()
+```
+
+## Evaluation of low-level trait extraction
+
+```{r}
+
+```
+
+## Smoothed FGCC and lesion count
+
+```{r}
+
+```
+
+## Disease index classification
+
+### Classification of disease severity categories in main experimental pars
+
+```{r}
+
+```
+
+### Within-year disease index classification performance
+
+```{r}
+
+```
+
+## Early detection of disease
+
