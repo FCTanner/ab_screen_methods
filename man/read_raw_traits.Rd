@@ -9,8 +9,8 @@ read_raw_traits()
 \value{
 `list` with `tibble` for each experiment, main parts, subsets and
  data from automated phenotyping system:
- - __date__ `date` Imaging date
- - __pot__ `character` Identifier for pot
+ * __date__ `date` Imaging date
+ * __pot__ `character` Identifier for pot
  * __n_lesions__ `integer` Number of detected lesions on image
  * __size_lesions__ `numeric` Total size of detected lesions
  * __genotype_id__ `character` Identifier of genotype
