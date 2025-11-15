@@ -35,9 +35,14 @@
 #'  * __projected_shoot_area_pixels__ `numeric` (only for lemna_data_2021):
 #'    Projected Shoot Area extracted from images from automated phenotyping
 #'    system
+#'  * __di__ `numeric` Disease Index
+#'  * __score_group__ `character` Disease severity category
+#'  * __subset__ `character` Identifier for experimental subset
 read_raw_traits <- function() {
 
   data_path <- fs::path_package("abscreenmethods", "data-raw")
+
+  scores <- read_scores()
 
   parse_columns <- function(x) {
     x |>
@@ -53,25 +58,30 @@ read_raw_traits <- function() {
 
   main_2020 <- readr::read_csv(fs::path(data_path, "trait_data", "2020_main.csv"))|>
     dplyr::rename(canon_fgcc = fgcc) |>
-    parse_columns()
+    parse_columns() |>
+    dplyr::left_join(scores |> dplyr::filter(subset == "2020 Main"))
   main_2021 <- readr::read_csv(fs::path(data_path, "trait_data", "2021_main.csv")) |>
     dplyr::rename(canon_fgcc = fgcc) |>
-    parse_columns()
+    parse_columns() |>
+    dplyr::left_join(scores |> dplyr::filter(subset == "2021 Main"))
   main_2022 <- readr::read_csv(fs::path(data_path, "trait_data", "2022_main.csv")) |>
     parse_columns()
 
   subset_2021 <- readr::read_csv(fs::path(data_path, "trait_data", "2021_fungicide.csv")) |>
     dplyr::rename(rededge_fgcc = fgcc) |>
-    parse_columns()
+    parse_columns() |>
+    dplyr::left_join(scores |> dplyr::filter(subset == "2021 Subset"))
   subset_2022 <- readr::read_csv(fs::path(data_path, "trait_data", "2022_fungicide.csv")) |>
     dplyr::rename(rededge_fgcc = fgcc) |>
-    parse_columns()
+    parse_columns()|>
+    dplyr::left_join(scores |> dplyr::filter(subset == "2022 Subset"))
 
   lemna_data_2021 <- readr::read_csv(fs::path(data_path, "trait_data", "2021_lemna_fgcc.csv")) |>
     dplyr::mutate(hyperspec = dplyr::case_when(
       .data$hyperspec == "Yes" ~ TRUE,
       .data$hyperspec == "Yes" ~ FALSE
-    ))
+    ))|>
+    dplyr::left_join(scores |> dplyr::filter(subset %in% c("2021 Subset", "2021 Main")))
 
   raw_traits <- list(
     main_2020 = main_2020,
@@ -83,4 +93,48 @@ read_raw_traits <- function() {
   )
 
   return(raw_traits)
+}
+
+
+
+#' Filters for di < 100
+validate_raw_traits <- function() {
+
+  main_2021_last_imaging <- raw_traits$main_2021 |>
+    dplyr::filter(date == as.Date("2021-09-19")) |>
+    dplyr::mutate(experiment = "Main")
+
+  subset_2021_last_imaging <- raw_traits$subset_2021 |>
+    dplyr::filter(date == as.Date("2021-09-19")) |>
+    dplyr::mutate(experiment = "Subset")
+
+   main_2021_last_imaging |>
+    dplyr::bind_rows(subset_2021_last_imaging) |>
+    dplyr::left_join(raw_traits$lemna_data_2021) |>
+    dplyr::select(dplyr::all_of(c("canon_fgcc", "rededge_fgcc", "projected_shoot_area_pixels")))
+
+  subset_2022_last_imaging <- raw_traits$subset_2022 |>
+    dplyr::filter(date == as.Date("2022-09-20")) |>
+    dplyr::mutate(experiment = "Subset")
+
+
+  # Correlation RedEdge - Canon ---------------------------------------------
+  plot(subset_2021_last_imaging$canon_fgcc, subset_2021_last_imaging$rededge_fgcc)
+  plot(subset_2022_last_imaging$canon_fgcc, subset_2022_last_imaging$rededge_fgcc)
+
+  cor(subset_2022_last_imaging$canon_fgcc, subset_2022_last_imaging$rededge_fgcc)
+
+
+
+
+  # Correlation in situ - Automated System ----------------------------------
+
+  joined_2021 <- main_2021_last_imaging |>
+    dplyr::left_join(subset_2021_last_imaging)
+
+  joined_2022 <- main_2022_last_imaging |>
+    dplyr::left_join(subset_2022_last_imaging)
+
+  joined_with_lemna_2021
+
 }
