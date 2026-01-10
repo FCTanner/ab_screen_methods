@@ -4,7 +4,7 @@
 \alias{make_genotype_distribution_table}
 \title{Builds table for distribution of genotypes in each experiment}
 \usage{
-make_genotype_distribution_table()
+make_genotype_distribution_table(scores = scores)
 }
 \value{
 reactable Object

@@ -4,7 +4,7 @@
 \alias{make_score_table}
 \title{Builds table for score overview}
 \usage{
-make_score_table(scores)
+make_score_table(scores = scores)
 }
 \arguments{
 \item{scores}{`tibble` return value of [read_scores()]}
