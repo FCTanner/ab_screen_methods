@@ -4,7 +4,7 @@
 \alias{make_control_genotypes_score_dotplot}
 \title{Plots a dotplot of the scores of the control genotypes}
 \usage{
-make_control_genotypes_score_dotplot(scores)
+make_control_genotypes_score_dotplot(scores = scores)
 }
 \arguments{
 \item{scores}{`tibble` return value of [read_scores()]}

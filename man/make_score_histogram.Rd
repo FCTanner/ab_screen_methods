@@ -4,12 +4,19 @@
 \alias{make_score_histogram}
 \title{Plots a histogram of the scores for one experimental subset}
 \usage{
-make_score_histogram(scores, experiment_subset)
+make_score_histogram(
+  scores = scores,
+  experiment_subset,
+  add_fill_legend_when_only_infected = TRUE
+)
 }
 \arguments{
 \item{scores}{`tibble` return value of [read_scores()]}
 
 \item{experiment_subset}{`character(1L)` one of `scores$subset`}
+
+\item{add_fill_legend_when_only_infected}{`logical(1L)` Should a color fill
+legend be added to the plot if only Infected plants are included.}
 }
 \value{
 `gg` object
