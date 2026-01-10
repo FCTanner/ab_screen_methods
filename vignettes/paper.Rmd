@@ -16,6 +16,15 @@ knitr::opts_chunk$set(
 devtools::load_all()
 ```
 
+# Materials and Methods
+
+
+### Distribution of genotypes across experiments
+
+```{r, echo = FALSE, message=FALSE}
+make_genotype_distribution_table()
+```
+
 
 # Results
 

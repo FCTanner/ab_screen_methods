@@ -3,7 +3,7 @@
 #' @param scores `tibble` return value of [read_scores()]
 #'
 #' @return reactable object
-make_score_table <- function(scores) {
+make_score_table <- function(scores = scores) {
   control_genotype_averages <- get_control_genotype_score_averages(scores)
   treatment_averages <- get_treatment_score_averages(scores) |>
     dplyr::mutate(genotype_id = "All pots")
@@ -29,7 +29,7 @@ make_score_table <- function(scores) {
 #' @param experiment_subset `character(1L)` one of `scores$subset`
 #'
 #' @return `gg` object
-make_score_histogram <- function(scores, experiment_subset){
+make_score_histogram <- function(scores = scores, experiment_subset){
 
   color_palette <- paletteer::paletteer_d(`"basetheme::clean"`, 5)
   color_palette_infection <- color_palette[1:2]
@@ -61,7 +61,7 @@ make_score_histogram <- function(scores, experiment_subset){
 #' @param scores `tibble` return value of [read_scores()]
 #'
 #' @return `gg` object
-make_control_genotypes_score_dotplot <- function(scores){
+make_control_genotypes_score_dotplot <- function(scores = scores){
 
   color_palette <- paletteer::paletteer_d(`"basetheme::clean"`, 5)
   color_palette_genotypes <- color_palette[3:5]
@@ -114,3 +114,15 @@ make_scoring_repeatability_table <- function() {
       )
     )
 }
+
+
+#' Builds table for distribution of genotypes in each experiment
+#'
+#' @return reactable Object
+make_genotype_distribution_table <- function() {
+  summarise_genotype_distribution() |>
+    tidyr::pivot_wider(id_cols = subset, names_from = type, values_from = n) |>
+    dplyr::rename("Subset" = subset) |>
+    reactable::reactable()
+}
+
