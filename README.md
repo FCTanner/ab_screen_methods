@@ -15,6 +15,7 @@ Methods for the analysis of RGB and multipectral images acquired in an Ascochyta
 	* Raw image data (can be found here: )
 		* 2020: RGB images
 		* 2021: RGB images and multispectral images
+  		* 2021: Automated phenotyping system: https://data.pawsey.org.au/download/APPF/public_experiments/0539_PH_UA_TPA_Tanner_Chickpea.tar
 		* 2022: RGB images and multispectral images
 	* Annotated data? (can be found here: )
 		* For segmentation
