@@ -1,4 +1,4 @@
-pot,date,genotype_id,type,treatment,row,column,rep,canon_fgcc,n_lesions,size_lesions,fgcc,ndvi,endvi,rendvi,ngrdi,gndvi
+pot,date,genotype_id,type,treatment,row,column,rep,canon_fgcc,n_lesions,size_lesions,rededge_fgcc,ndvi,endvi,rendvi,ngrdi,gndvi
 121A,2021-07-05,CVR019,Cultivar,Infected,1,9,3,0.03091679997543706,0,0,NA,NA,NA,NA,NA,NA
 122A,2021-07-05,CVR016,Cultivar,Infected,2,9,3,0.03339769596660938,0,0,NA,NA,NA,NA,NA,NA
 123A,2021-07-05,WLD131,Wild cicer,Infected,3,9,3,0.03699151726223282,0,0,NA,NA,NA,NA,NA,NA

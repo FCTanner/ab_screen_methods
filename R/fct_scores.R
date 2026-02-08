@@ -17,9 +17,9 @@ read_scores <- function() {
   data_path <- fs::path_package("abscreenmethods", "data-raw")
 
   design_2020 <- readr::read_csv(fs::path(data_path, "trait_data/2020_Main.csv"))
-  design_2021_Main <- readr::read_csv(fs::path(data_path, "trait_data/2021_Main.csv"))
+  design_2021_main <- readr::read_csv(fs::path(data_path, "trait_data/2021_Main.csv"))
   design_2021_fungicide <- readr::read_csv(fs::path(data_path, "trait_data/2021_fungicide.csv"))
-  design_2022_Main <- readr::read_csv(fs::path(data_path, "trait_data/2022_Main.csv"))
+  design_2022_main <- readr::read_csv(fs::path(data_path, "trait_data/2022_Main.csv"))
   design_2022_fungicide <- readr::read_csv(fs::path(data_path, "trait_data/2022_fungicide.csv"))
 
   scores_2020 <- readr::read_csv(fs::path(data_path, "score_data/scores_2020.csv")) |>
@@ -35,7 +35,7 @@ read_scores <- function() {
 
 
   scores_2021_Main_matched <- scores_2021 |>
-    dplyr::left_join(design_2021_Main |>
+    dplyr::left_join(design_2021_main |>
                        dplyr::mutate(pot = as.character(pot)) |>
                        dplyr::distinct(pot, type, genotype_id)) |>
     dplyr::mutate(subset = "2021 Main",
@@ -51,7 +51,7 @@ read_scores <- function() {
     dplyr::filter(!is.na(type))
 
   scores_2022_Main_matched <- scores_2022 |>
-    dplyr::left_join(design_2022_Main |>
+    dplyr::left_join(design_2022_main |>
                        dplyr::mutate(pot = as.character(pot)) |>
                        dplyr::distinct(pot, type, genotype_id)) |>
     dplyr::mutate(subset = "2022 Main",

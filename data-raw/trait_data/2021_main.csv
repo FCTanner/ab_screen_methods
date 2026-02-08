@@ -1,4 +1,4 @@
-pot,date,n_lesions,size_lesions,genotype_id,type,rep,row,column,fgcc
+pot,date,n_lesions,size_lesions,genotype_id,type,rep,row,column,canon_fgcc
 2309,2021-07-13,0,0,INT036,Introgression,3,97,5,0.06715974247931883
 2310,2021-07-13,0,0,FLP263,FLIP,3,97,6,0.19029366567268427
 2311,2021-07-13,0,0,WLD131,Wild cicer,3,97,7,0.01644877101757236

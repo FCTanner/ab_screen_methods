@@ -1,4 +1,4 @@
-pot,date,n_lesions,size_lesions,genotype_id,type,rep,row,column,fgcc
+pot,date,n_lesions,size_lesions,genotype_id,type,rep,row,column,canon_fgcc
 1,2020-07-27,2,7.692779987877967e-4,CVR376,Cultivar,1,1,1,0.34636826653497366
 1 A,2020-07-27,0,0,WLD042,Wild cicer,1,1,59,0
 10,2020-07-27,0,0,CVR413,Cultivar,1,10,1,0.3663424863135936

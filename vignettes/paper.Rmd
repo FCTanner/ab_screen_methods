@@ -66,9 +66,37 @@ make_scoring_repeatability_table()
 
 ## Smoothed FGCC and lesion count
 
-```{r}
+### Manual pot removal due to non-germination
 
+Pots where a maximum FGCC of 0.05 was not exceeded throughout the entire 
+experiment were removed.
+
+```{r, echo = FALSE, message=FALSE}
+make_pot_removal_info_table()
 ```
+
+### Experimental layout
+
+```{r, echo = FALSE, message=FALSE, fig.width=8, fig.height=5}
+plots <- make_statgenhtp_layout_plots()
+```
+
+### Single timepoint outlier removal
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+counts <- make_counts_of_removed_pots_at_single_timepoints(trait = "canon_fgcc")
+tables <- make_pot_single_timepoint_removal_tables(counts)
+htmltools::tagList(tables)
+```
+
+#### Summary of single timepoint outlier removal 
+
+```{r}
+counts
+```
+
+
+
 
 ## Disease index classification
 
