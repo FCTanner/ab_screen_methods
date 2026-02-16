@@ -221,11 +221,18 @@ make_statgenhtp_layout_plots <- function() {
 #' @return `list`
 make_counts_of_removed_pots_at_single_timepoints <- function(trait) {
   subsets <- unique(traits$subset)
+
   valid_pots <- subsets |>
     purrr::map(\(x) {
+
+      is_main <- x %in% c("2020 Main", "2021 Main", "2022 Main")
+
       tp_obj <- make_statgenhtp_timepoints(x)
-      removed <- remove_single_timepoint_outliers(tp_obj, trait = trait, subset = x)
-      valid <- statgenHTP::countValid(removed, trait)
+
+      if (!is_main || (is_main && trait %in% c("n_lesions", "canon_fgcc"))) {
+        removed <- remove_single_timepoint_outliers(tp_obj, trait = trait, subset = x)
+        valid <- statgenHTP::countValid(removed, trait)
+      }
     })
 
   valid_pots <- stats::setNames(valid_pots, subsets)
@@ -233,6 +240,63 @@ make_counts_of_removed_pots_at_single_timepoints <- function(trait) {
   return(valid_pots)
 }
 
+
+#' Get average removed pots for all traits and all subsets
+#'
+#' @return `tibble` with average kept pots after outlier removal, with percentage
+#'  compared to germinated pots
+make_average_removed_outliers <- function() {
+
+  tabulate_traits <- c("n_lesions", "canon_fgcc", "rededge_fgcc", "ndvi",
+              "endvi", "rendvi", "ngrdi", "gndvi")
+
+  counts <- tabulate_traits |>
+    purrr::set_names() |>
+    purrr::map(\(t) {
+      make_counts_of_removed_pots_at_single_timepoints(t)
+    })
+
+  subsets <- unique(traits$subset)
+
+  non_germinated <- count_non_germinated_pots()
+
+  counts |>
+    purrr::map(\(trait) {
+      purrr::imap_chr(trait, \(values, subset) {
+        n_germinated <- non_germinated |>
+          dplyr::filter(experiment == subset) |>
+          dplyr::pull(n_pots_germinated)
+
+        imaged_timepoints <- values[values != 0]
+
+
+        mean_kept <- mean(imaged_timepoints, na.rm = TRUE)
+
+        mean_kept_ratio <- mean_kept / n_germinated
+
+        mean_kept_percentage <- mean_kept_ratio * 100
+
+        result <- if (!is.na(mean_kept)) {
+          paste0(round(mean_kept), " (", round(mean_kept_percentage, digits = 2), " %)")
+
+        } else NA_character_
+      })
+    }) |>
+    tibble::as_tibble() |>
+    tibble::add_column(subset = subsets) |>
+    dplyr::relocate(subset) |>
+    dplyr::rename(
+      `Subset` = subset,
+      `n Lesions` = n_lesions,
+      `Canon FGCC` = canon_fgcc,
+      `Rededge FGCC` = rededge_fgcc,
+      `NDVI` = ndvi,
+      `ENDVI` = endvi,
+      `RENDVI` = rendvi,
+      `NGRDI` = ngrdi,
+      `GNDVI` = gndvi
+    )
+}
 
 
 #' Count pots after outlier removal at individual timepoints
@@ -242,6 +306,7 @@ make_pot_single_timepoint_removal_tables <- function(counts) {
   purrr::imap(counts, \(valid, subset_name) {
 
     total_pots <- experiment_metadata[[subset_name]]$n_pots
+    #TODO: consider non-germinated pots
 
     data <- data.frame(valid) |>
       tibble::rownames_to_column("date") |>
