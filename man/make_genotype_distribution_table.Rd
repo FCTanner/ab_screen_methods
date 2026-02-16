@@ -7,7 +7,7 @@
 make_genotype_distribution_table(scores = scores)
 }
 \value{
-reactable Object
+`reactable` Object
 }
 \description{
 Builds table for distribution of genotypes in each experiment

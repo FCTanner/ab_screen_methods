@@ -132,7 +132,7 @@ make_scoring_repeatability_table <- function() {
 
 #' Builds table for distribution of genotypes in each experiment
 #'
-#' @return reactable Object
+#' @return `reactable` Object
 make_genotype_distribution_table <- function(scores = scores) {
   summarise_genotype_distribution() |>
     tidyr::pivot_wider(id_cols = subset, names_from = type, values_from = n) |>
@@ -171,4 +171,117 @@ save_score_patchwork_plot <- function() {
   ggplot2::ggsave(filename = "out/scores_patchwork.pdf", plot = p,
                   units = "cm", width =12, height = 10, limitsize = F,
                   device = "pdf", scale = 1.5)
+}
+
+
+#' Tabulate info about pot removal due to non-germination
+#'
+#' @return `reactable` Object
+make_pot_removal_info_table <- function() {
+  counts <- count_non_germinated_pots()
+  counts |>
+    reactable::reactable(
+      columns = list(
+        experiment = reactable::colDef("Experiment"),
+        all_pots = reactable::colDef("All pots"),
+        n_pots_germinated  = reactable::colDef("Germinated pots"),
+        removed_pots  = reactable::colDef("Non-germinated pots")
+      )
+    )
+}
+
+
+#' Visualize experimental design
+#'
+#' @return `list` of `ggplot2` objects of experimental design
+make_statgenhtp_layout_plots <- function() {
+  subsets <- unique(traits$subset)
+  subsets |>
+    purrr::map(\(x){
+      is_main <- stringr::str_detect(x, "Main")
+      tp_obj <- make_statgenhtp_timepoints(x)
+      first_timepoint <- attr(tp_obj, "timePoints")$timePoint[1]
+      x <- plot(tp_obj,
+                plotType = "layout",
+                timePoints = first_timepoint,
+                showGeno = FALSE,
+                traits = "canon_fgcc")
+
+      return(invisible(x))
+    })
+}
+
+
+#' Count pots after outlier removal at individual timepoints
+#'
+#' TODO: move into spatiotemporal_model pipeline, return outputs
+#'
+#' @param trait `character(1L)` trait to be checked for outliers
+#'
+#' @return `list`
+make_counts_of_removed_pots_at_single_timepoints <- function(trait) {
+  subsets <- unique(traits$subset)
+  valid_pots <- subsets |>
+    purrr::map(\(x) {
+      tp_obj <- make_statgenhtp_timepoints(x)
+      removed <- remove_single_timepoint_outliers(tp_obj, trait = trait, subset = x)
+      valid <- statgenHTP::countValid(removed, trait)
+    })
+
+  valid_pots <- stats::setNames(valid_pots, subsets)
+
+  return(valid_pots)
+}
+
+
+
+#' Count pots after outlier removal at individual timepoints
+#'
+#' @return `list`
+make_pot_single_timepoint_removal_tables <- function(counts) {
+  purrr::imap(counts, \(valid, subset_name) {
+
+    total_pots <- experiment_metadata[[subset_name]]$n_pots
+
+    data <- data.frame(valid) |>
+      tibble::rownames_to_column("date") |>
+      dplyr::mutate(date= as.Date(.data$date),
+                    valid_ratio = .data$valid / .env$total_pots,
+                    timepoint_removed = .data$valid_ratio < 0.75) |>
+      dplyr::left_join(traits |> dplyr::select(date, dai, das) |> dplyr::distinct(), by = "date")
+
+    table <- reactable::reactable(data, columns = list(
+      valid = reactable::colDef("Pots remaining"),
+      date = reactable::colDef(
+        name = "Imaging date",
+        format = reactable::colFormat(date = TRUE, locales = "en-US")
+      ),
+      valid_ratio = reactable::colDef(
+        name = "Valid pots (%)",
+        format = reactable::colFormat(percent = TRUE, digits = 2)
+      ),
+      timepoint_removed = reactable::colDef(
+        name = "Timepoint kept (> 75% valid)",
+        align = "center",
+        cell = function(value) {
+          if (!isTRUE(value)) {
+            htmltools::span("✔", style = "color: green; font-weight: bold;")
+          } else {
+            htmltools::span("✖", style = "color: red; font-weight: bold;")
+          }
+        }
+      ),
+      dai = reactable::colDef(
+        name = "Days after inoculation"
+      ),
+      das = reactable::colDef(
+        name = "Days after sowing"
+      )
+    ))
+
+    htmltools::tagList(
+      htmltools::tags$h4(subset_name),
+      table
+    )
+  })
 }
