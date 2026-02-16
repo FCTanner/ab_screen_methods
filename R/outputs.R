@@ -51,8 +51,8 @@ make_score_histogram <- function(
     ggplot2::geom_histogram(data = data_subset,
                             ggplot2::aes(di, fill = treatment, color = treatment),
                             alpha = 0.5, position = "identity") +
-    ggplot2::scale_color_manual(values = c("Fungicide" = color_palette_infection[1], "Infected" = color_palette_infection[2])) +
-    ggplot2::scale_fill_manual(values = c("Fungicide" = color_palette_infection[1], "Infected" = color_palette_infection[2])) +
+    ggplot2::scale_color_manual(values = c("Fungicide-treated" = color_palette_infection[1], "Infected" = color_palette_infection[2])) +
+    ggplot2::scale_fill_manual(values = c("Fungicide-treated" = color_palette_infection[1], "Infected" = color_palette_infection[2])) +
     ggplot2::scale_x_continuous(breaks = c(0,20,40,60,80,100)) +
     ggplot2::labs(x = "Disease Index", subtitle = p_title) +
     ggplot2::theme_bw() +

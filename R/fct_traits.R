@@ -25,7 +25,8 @@ read_traits <- function() {
                   main_unit = dplyr::case_when(.data$row <= 9 ~ .data$rep,
                                                .data$row >9 ~ .data$rep +3),
                   dai = as.integer(difftime(.data$date, .env$experiment_metadata[[subset_2021_fungicide]]$infection_date , units = "days")),
-                  das = as.integer(difftime(.data$date, .env$experiment_metadata[[subset_2021_fungicide]]$sowing , units = "days"))
+                  das = as.integer(difftime(.data$date, .env$experiment_metadata[[subset_2021_fungicide]]$sowing , units = "days")),
+                  treatment = dplyr::if_else(.data$treatment == "Fungicide", "Fungicide-treated", .data$treatment)
                   )
 
   subset_2022_main <- "2022 Main"
@@ -50,7 +51,8 @@ read_traits <- function() {
                   # Fix position mixup during imaging
                   pot = dplyr::case_when(.data$pot == "20A" ~ "21A",
                                          .data$pot == "21A" ~ "20A",
-                                         TRUE ~ .data$pot)
+                                         TRUE ~ .data$pot),
+                  treatment = dplyr::if_else(.data$treatment == "Fungicide", "Fungicide-treated", .data$treatment)
     )
 
 

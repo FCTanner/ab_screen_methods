@@ -7,7 +7,7 @@
 #'  * __type__ `character` Genotype group
 #'  * __subset__ `character` Experiment
 #'  * __treatment__ `character` treatment of pot, either "Infected" or
-#'    "Fungicide"
+#'    "Fungicide-treated"
 #'  * __score_group__ `character` Category of disease severity, either "Great",
 #'    "Ok" or "Reject"
 #'  * __score_group_count__ `integer` Count of incidence of score group within
@@ -73,7 +73,9 @@ read_scores <- function() {
     dplyr::mutate(score_group = dplyr::case_when(di > 80 ~ "Reject",
                                                  di > 40 & di <= 80 ~ "Ok",
                                                  di <= 40 ~ "Great"),
-                  score_group = as.factor(score_group))
+                  score_group = as.factor(score_group),
+                  treatment = dplyr::if_else(.data$treatment == "Fungicide", "Fungicide-treated", .data$treatment)
+    )
 
   return(scores)
 }
