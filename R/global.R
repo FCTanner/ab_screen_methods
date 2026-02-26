@@ -11,7 +11,7 @@ experiment_metadata <- list(
     scoring_date = as.Date("2020-09-28"),
     n_pots = 2096
   ),
-  "2021 Main" =  list(
+  "2021 Main" = list(
     sowing_date = as.Date("2021-06-16"),
     thinning_date = as.Date("2021-07-16"),
     infection_date = as.Date("2021-07-20"),
@@ -39,7 +39,12 @@ experiment_metadata <- list(
     sowing_date = as.Date("2022-06-08"),
     thinning_date = as.Date("2022-07-14"),
     infection_date = as.Date("2022-07-19"),
-    fungicide_dates = as.Date(c("2022-07-18", "2022-08-09", "2022-08-16", "2022-09-01")),
+    fungicide_dates = as.Date(c(
+      "2022-07-18",
+      "2022-08-09",
+      "2022-08-16",
+      "2022-09-01"
+    )),
     scoring_date = as.Date("2022-09-22"),
     n_pots = 180
   )
