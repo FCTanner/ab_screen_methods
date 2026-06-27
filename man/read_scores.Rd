@@ -14,7 +14,7 @@ read_scores()
  * __type__ `character` Genotype group
  * __subset__ `character` Experiment
  * __treatment__ `character` treatment of pot, either "Infected" or
-   "Fungicide"
+   "Fungicide-treated"
  * __score_group__ `character` Category of disease severity, either "Great",
    "Ok" or "Reject"
  * __score_group_count__ `integer` Count of incidence of score group within

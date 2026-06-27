@@ -58,13 +58,6 @@ subsets |>
 make_scoring_repeatability_table()
 ```
 
-## Evaluation of low-level trait extraction
-
-```{r}
-
-```
-
-## Smoothed FGCC and lesion count
 
 ### Manual pot removal due to non-germination
 
@@ -95,23 +88,4 @@ htmltools::tagList(tables)
 make_average_removed_outliers() |> 
   reactable::reactable()
 ```
-
-
-
-
-## Disease index classification
-
-### Classification of disease severity categories in main experimental pars
-
-```{r}
-
-```
-
-### Within-year disease index classification performance
-
-```{r}
-
-```
-
-## Early detection of disease
 
