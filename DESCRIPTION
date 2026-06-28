@@ -1,6 +1,6 @@
 Package: abscreenmethods
 Type: Package
-Title: Recreate results from paper
+Title: Package to support publication
 Version: 0.0.0.9005
 Authors@R: c(
     person(
@@ -9,7 +9,7 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Recreate results from paper
+Description: Package to support publication
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
