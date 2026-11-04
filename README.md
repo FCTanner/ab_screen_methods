@@ -1,6 +1,7 @@
 # ab_screen_methods
 
-Code supporting the article "Time course sensor-based phenotyping can predict Ascochyta blight disease severity in Cicer species"
+Code supporting the article "Time course sensor-based phenotyping can predict Ascochyta blight disease severity in Cicer species".
+The primary article is available here: https://doi.org/10.1002/ppj2.70097
 
 <p>
   <img src="inst/ext/experiment.jpg" alt="Experimental setups: Chickpea plants grown in pots arranged in rows." height="270">
@@ -12,7 +13,7 @@ Code supporting the article "Time course sensor-based phenotyping can predict As
 ## Description
 
 Methods for the analysis of RGB and multipectral images acquired in an Ascochyta Blight disease resistance screen of chickpea and wild Cicer material.
-[Link to article]()
+
 
 ## Contents
 
